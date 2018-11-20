@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>橘子娱乐 - 年轻人第一新媒体</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="keywords" content="娱乐,资讯,明星,娱乐,时尚,生活">
+   <meta name="description" content="橘子娱乐是原创新闻资讯平台的新生代趣闻工厂, 内容涵盖社交网络热点, 娱乐八卦, 美妆、时尚，影视，生活等类别.用户可以第一时间了解最热的原创资讯，橘子娱乐将致力于成为娱乐资讯的原创内容生产者。">
+   <link rel="shortcut icon" href="http://cdn01.happyjuzi.com/icon/juziyule.png?imageView2/2/w/48/h/48" type="image/x-icon">
+   <link rel="stylesheet" href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css">
+
+   <link href="https://cdn.bootcss.com/Swiper/4.3.0/css/swiper.min.css" rel="stylesheet">
+   <script src="https://cdn.bootcss.com/Swiper/4.3.0/js/swiper.min.js"></script>
+
+
+   <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+   <style media="screen">
+      body,html {
+        padding: 0 0;
+        margin: 0 0;
+        width: 100%;
+        height: 100%;
+        /* overflow: hidden; */
+      }
+      .swiper-container {
+          width: 100%;
+          height: 100%;
+          background-color: #e9f0de;
+          background: url('./static/img/bg-2.png') no-repeat top;
+          background-size: 100%;
+      }
+      .swiper-wrapper {
+
+      }
+      .swiper-slide {
+        height: 100%;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+
+      }
+      .slide-1 {
+        background: url('./static/img/bg-1.png') no-repeat top;
+        background-size: 100%;
+      }
+      .slide-2 {
+
+      }
+      .logo {
+        margin-left: 15px;
+        position: absolute;
+        z-index: 10;
+      }
+      .logo img {
+        width: 70px;
+      }
+      .title {
+        width: 100%;
+        display: block;
+        text-align: center;
+        margin-top: 15%;
+      }
+      .title img{
+        width: 210px;
+      }
+      .arrow {
+        display: block;
+        width: 100%;
+        position: absolute;
+        bottom: 0;
+        animation: breathShow 1.2s infinite ease-in;
+      }
+      .arrow img {
+        width: 100%;
+      }
+      .left-content {
+        position: absolute;
+        left:18px;
+        bottom:25px;
+      }
+      .left-content img {
+        width: 32px;
+      }
+
+      .flower {
+        position: absolute;
+        z-index: 11;
+        top: -20px;
+      }
+
+      .flower-1 {
+        left:15px;
+        animation: flower1 5s infinite ease-in;
+      }
+
+      .flower-2 {
+        left:45px;
+        animation: flower2 5s infinite ease-in;
+        animation-delay: 2s;
+      }
+
+      .flower-3 {
+        left:155px;
+        animation: flower3 5s infinite ease-in;
+        animation-delay: 1s;
+      }
+
+      .flower-4 {
+        left:290px;
+        animation: flower4 5s infinite ease-in;
+        animation-delay: 3.5s;
+      }
+
+      @keyframes flower1 {
+        0% {
+          top: -20px;
+          left: 10px;
+        }
+        20 % {
+          left: 35px;
+        }
+        40% {
+          left: 10px;
+          opacity: 1;
+        }
+        60% {
+          left: 20px;
+        }
+        80% {
+          left: 10px;
+        }
+        100% {
+          opacity: 0;
+          top: 300px;
+        }
+      }
+
+      @keyframes flower2 {
+        0% {
+          top: -20px;
+          left: 60px;
+        }
+        20 % {
+          left: 85px;
+        }
+        40% {
+          left: 60px;
+        }
+        60% {
+          left: 70px;
+          opacity: 1;
+        }
+        80% {
+          left: 60px;
+        }
+        100% {
+          opacity: 0;
+          top: 260px;
+        }
+      }
+
+      @keyframes flower3 {
+        0% {
+          top: -20px;
+          left: 155px;
+        }
+        20 % {
+          left: 170px;
+        }
+        40% {
+          left: 155px;
+        }
+        60% {
+          left: 170px;
+        }
+        80% {
+          opacity: 1;
+          left: 160px;
+        }
+        100% {
+          opacity: 0;
+          top: 400px;
+        }
+      }
+
+      @keyframes flower4 {
+        0% {
+          top: -20px;
+          left: 290px;
+        }
+        20 % {
+          left: 310px;
+        }
+        40% {
+          left: 300px;
+          opacity: 1;
+        }
+        60% {
+          left: 290px;
+        }
+        100% {
+          opacity: 0;
+          left: 290px;
+          top: 300px;
+        }
+      }
+
+      @keyframes breathShow {
+        0% {
+          bottom: -20px;
+          opacity: 0;
+        }
+
+        20% {
+          opacity: 1;
+          bottom: -20px;
+        }
+
+        80% {
+          bottom: 0;
+        }
+
+        100% {
+          opacity: 0;
+          /* bottom: -15px; */
+          opacity: 0;
+        }
+      }
+
+      .swiper-slide-active .bounce{
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+      }
+
+      .form {
+        position: absolute;
+        bottom: 10px;
+        overflow: auto;
+        z-index: 15;
+      }
+
+      .form-group {
+        z-index: 12;
+        position: relative;
+        display: block;
+        margin: 10px 25px 0;
+        font-size: 14px;
+        line-height: 1em;
+      }
+      .input-group {
+        display: flex;
+        margin: 15px 0;
+      }
+      .form-input {
+        position: relative;
+        width: 100%;
+        display: flex;
+        border: 1px solid rgba(71, 57, 100, .4);
+        box-shadow: 4px 0 7px rgba(39, 0, 1, .25);
+        background-color: rgba(255,255,255, .4);
+        padding: 12px 15px;
+        border-radius: 10px 10px;
+      }
+
+      .content-body {
+        z-index: 12;
+        position: relative;
+        display: block;
+        margin: 0 10px;
+      }
+      .img-fluid {
+        width: 100%;
+      }
+      .button-group {
+        z-index: 50;
+        width: 165px;
+        margin: 0 auto;
+      }
+      .button-group img {
+        width: 165px;
+      }
+      .swiper-container{
+        max-width: 750px;
+      }
+   </style>
+
+  </head>
+  <body>
+    <div class="swiper-container">
+      <div class="logo">
+        <img src="./static/img/logo-1.png">
+        <img src="./static/img/logo-2.png">
+      </div>
+      <div class="">
+        <div class="flower flower-1">
+          <img src="./static/img/f-1.png" style="width:13px;">
+        </div>
+        <div class="flower flower-2">
+          <img src="./static/img/f-2.png" style="width:12px;">
+        </div>
+        <div class="flower flower-3">
+          <img src="./static/img/f-3.png" style="width:9px;">
+        </div>
+        <div class="flower flower-4">
+          <img src="./static/img/f-4.png" style="width:17px;">
+        </div>
+      </div>
+    <div class="swiper-wrapper">
+        <div class="swiper-slide slide-1">
+          <div class="title bounce">
+            <img src="./static/img/title.png">
+          </div>
+          <div class="left-content">
+            <img src="./static/img/content.png">
+          </div>
+          <div class="arrow">
+            <img src="./static/img/arrow-group.png">
+          </div>
+        </div>
+        <div class="swiper-slide slide-2">
+          <div class="title bounce">
+            <img src="./static/img/title.png">
+          </div>
+          <div class="form">
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" name="username" class="form-input" id="username" placeholder="请填写您的姓名">
+              </div>
+              <div class="input-group">
+                <input type="text" name="mobile" class="form-input" id="mobile" placeholder="请填写您的手机号">
+              </div>
+            </div>
+            <div class="content-body">
+              <img src="./static/img/content-1.png" class="img-fluid">
+            </div>
+            <div class="button-group" id="submitButton">
+              <img src="./static/img/button.png">
+            </div>
+          </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+   $(document).ready(function () {
+     $("#submitButton").click(function(){
+       addEntrant();
+     });
+   })
+
+   function addEntrant() {
+       var name = $('#username').val();
+       var mobile = $('#mobile').val();
+       if (!name) {
+         alert('请填写您的姓名')
+       } else if (!mobile) {
+         alert('请填写您的手机号')
+       } else {
+         $.ajax({
+             url : 'http://m.happyjuzi.com/ajax-addsell',
+             data : {name:name,mobile:mobile},
+             dataType : 'json',
+             type : 'POST',
+             success: function(res) {
+                 alert('报名成功！');
+             },
+             error: function (err) {
+               alert('无法连接到服务器');
+             }
+         });
+       }
+
+   }
+</script>
+<script type="text/javascript">
+  var mySwiper = new Swiper ('.swiper-container', {
+    direction: 'vertical',
+    loop: false
+  })
+</script>
+  </body>
+</html>

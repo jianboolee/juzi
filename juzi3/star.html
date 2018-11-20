@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>星眼系统 - 橘子娱乐 - 年轻人第一新媒体</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="keywords" content="娱乐,资讯,明星,娱乐,时尚,生活">
+   <meta name="description" content="橘子娱乐是原创新闻资讯平台的新生代趣闻工厂, 内容涵盖社交网络热点, 娱乐八卦, 美妆、时尚，影视，生活等类别.用户可以第一时间了解最热的原创资讯，橘子娱乐将致力于成为娱乐资讯的原创内容生产者。">
+   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+
+  <link href="./assets/bootstrap.min.css" rel="stylesheet">
+   <link rel="stylesheet" href="./static/css/style.css">
+   <link rel="stylesheet" href="./static/css/star.css">
+   <style>
+    [v-cloak] { display: none; }
+   </style>
+
+   <script src="./assets/vue.min.js"></script>
+   <script src="./assets/axios.min.js"></script>
+   <script src="./assets/echarts.min.js"></script>
+   <script src="./static/js/china.js"></script>
+
+  </head>
+  <body>
+    <div class="bg-anim">
+      <div id='stars'></div>
+      <div id='stars2'></div>
+      <div id='stars3'></div>
+    </div>
+    <div class="app" id="app"  v-cloak :class="{render: render}">
+      <!-- Header -->
+      <div class="app-header">
+          <a href="./" class="home-button">
+            <img src="./static/img/home-btn.png">
+          </a>
+          <div class="logo">
+            <a href="./">
+            <img src="./static/img/logo.png">
+            </a>
+          </div>
+          <div class="search-form">
+            <form method="get" @submit="onSearch">
+              <button type="submit" name="button" class="search-button" v-show="key.length > 0">
+              </button>
+              <input class="input" type="text" name="" v-model="key" placeholder="搜索艺人">
+            </form>
+          </div>
+      </div>
+      <!-- / Header -->
+      <div v-show="loaded && star.name" class="app-body">
+      <!-- Section 1 -->
+      <div class="section-1 c-bg">
+        <div class="star-info">
+          <div class="star-image">
+            <img v-if="star.pic_url" :src="star.pic_url">
+          </div>
+          <div class="star-info-container">
+            <div class="star-name">
+              <span class="m-r-1">{{star.name}}</span>
+              <a :href="'https://baike.baidu.com/item/' + star.name" target="_blank">查看百科</a>
+            </div>
+            <div class="more-info">
+              <span class="m-r-1">排名</span>
+              <span class="m-r-1">{{star.star_rank}}</span>
+              <span class="m-r-1">星指数</span>
+              <span class="m-r-1">{{star.hot_index}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row row-md">
+          <div class="col-3-c">
+            <div class="col-3-block c-bg">
+              <div class="s1">
+                <div class="s1-title">微博日互动量</div>
+                <div class="s1-line"></div>
+                <div class="s1-content">
+                  <div class="s1-center">
+                    <div class="s1-block">
+                      <span class="s1-label">转发</span><span class="s1-text">{{star.first_forward_num | formatNumber}}</span><br>
+                      <span class="s1-label">评论</span><span class="s1-text">{{star.first_comment_num | formatNumber}}</span><br>
+                      <span class="s1-label">点赞</span><span class="s1-text">{{star.first_like_num | formatNumber}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-3-c">
+            <div class="col-3-block c-bg">
+              <div class="s1">
+                <div class="s1-title">超级话题榜</div>
+                <div class="s1-line"></div>
+                <div class="s1-content">
+                  <div class="s1-center">
+                    <div class="s1-block">
+                      <span class="s1-label">阅读数</span><span class="s1-text">{{star.chaohua_read_num | formatNumber}}</span><br>
+                      <span class="s1-label">帖子数</span><span class="s1-text">{{star.chaohua_topic_num | formatNumber}}</span><br>
+                      <span class="s1-label">粉丝数</span><span class="s1-text">{{star.chaohua_fans_num | formatNumber}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-3-c">
+            <div class="col-3-block c-bg">
+              <div class="s1">
+                <div class="s1-title">媒体曝光数</div>
+                <div class="s1-line"></div>
+                <div class="s1-content">
+                  <div class="s1-center">
+                    <div class="s1-block">
+                      <span class="s1-label">新闻数量</span><span class="s1-text">{{star.news_num | formatNumber}}</span><br>
+                      <span class="s1-label">媒体数量</span><span class="s1-text">{{star.media_num | formatNumber}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-3-c">
+            <div class="col-3-block c-bg">
+              <div class="s1">
+                <div class="s1-title">微博粉丝数</div>
+                <div class="s1-line"></div>
+                <div class="s1-content">
+                  <div class="s1-center">
+                    <div class="s1-block">
+                      <span class="s1-label">微博粉丝数</span><span class="s1-text">{{star.weibo_fans_num | formatNumber}}</span><br>
+                      <span class="s1-label">日活跃粉丝</span><span class="s1-text">{{star.active_fans_num | formatNumber}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- /Section 1 -->
+
+      <div class="section-2" v-show="star.brand_url && star.brand_url.length > 0">
+        <div class="section-heading">
+          <div class="section-title">已代言品牌</div>
+          <div class="section-sub-title">BRANDS ALREADY ENDORSED BY HIM</div>
+          <!-- <div class="section-sub-title">HE HAS THE ENDORSEMENT OF THE BRAND</div> -->
+        </div>
+        <div class="section-body" v-if="star.brand_url && star.brand_url.length > 0">
+          <div class="brand-list">
+            <div class="brand-list-group" :class="{open: brand_open}">
+            <div class="brand-list-item" v-for="(item, index) in star.brand_url">
+              <a :href="'https://www.baidu.com/s?wd=' + star.brand[index]" target="_blank">
+              <div class="img-block">
+                <img v-if="item" :src="item">
+                <span v-else class="font-thin">{{star.brand[index].substring(1, 0)}}</span>
+              </div>
+              <div class="brand-name"> {{star.brand[index]}}</div>
+              </a>
+            </div>
+            </div>
+            <div class="">
+              <a @click="brand_open = !brand_open" class="expand-btn" :class="{expand: brand_open}">
+                <img src="./static/img/arrow-down.png">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="section-2 m-t" v-show="hasRights">
+        <div class="section-heading">
+          <div class="section-title">配合权益</div>
+          <div class="section-sub-title">COORDINATION OF RIGHTS</div>
+        </div>
+        <div class="section-body">
+          <div class="flex-box text-27 flex-box-border-1  bg-lter">
+            <div class="flex-box-1" v-if="this.right1 && this.right1.valid">
+              <div class="flex-box b-b">
+                <div class="flex-box-2">
+                  <div class="text-right padder-sm padder-v-50">
+                    {{right1.title}}
+                  </div>
+                </div>
+                <div class="flex-box-2">
+                  <div class="padder-sm padder-v-50">
+                    {{right1.desc}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex-box-2 flex-box-2-sm" v-for="item in rights" v-if="item.valid">
+              <div class="flex-box  b-b b-r">
+                <div class="flex-box-2">
+                  <div class="text-right padder-sm padder-v-50">
+                    {{item.title}}
+                  </div>
+                </div>
+                <div class="flex-box-2">
+                  <div class="padder-sm padder-v-50">
+                    {{item.desc}}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-2 m-t" v-show="star.star_works && star.star_works.length > 0">
+        <div class="section-heading">
+          <div class="section-title">即将上线作品</div>
+          <div class="section-sub-title">ABOUT ON-LINE FILM AND TELEVISION WORKS</div>
+        </div>
+        <div class="section-body">
+          <div class="box bg-lter font-thin m-b-45" v-for="work in star.star_works">
+            <div class="box-1 b-b-lter">
+              <div class="wrapper-md">
+                <span class="text-lg">《{{work.name}}》</span>
+                <!-- <span class="text-normal">电视剧</span> -->
+              </div>
+            </div>
+            <div class="box-1 b-b-lter">
+              <div class="box">
+                <div class="box-col-5">
+                  <div class=" padder-v-40 padder-25">
+                    <span class="text-lg m-r-35">上线时间</span>
+                    <span class="text-md">{{work.create_time}}</span>
+                  </div>
+                </div>
+                <div class="box-col-5">
+                  <div class="padder-25 padder-v-40">
+                    <span class="text-lg m-r-35">扮演角色</span>
+                    <span class="text-md">{{work.role}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="box-1">
+              <div class="box">
+                <div class="box-col-5">
+                  <div class=" padder-v-40 padder-25">
+                    <div class="label-2">
+                      <span class="text-lg m-r-35">播出平台</span>
+                    </div>
+                    <div class="label-body-2">
+                      <span class="text-md" v-if="!work.platforms">暂无</span>
+                      <div class="platform-image" v-for="platform in work.platforms">
+                        <img :src="platform | matchPlatform">
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+                <div class="box-col-5">
+                  <div class="padder-25 padder-v-40">
+                    <div class="label-2">
+                      <span class="text-lg m-r-35">合作演员</span>
+                    </div>
+                    <div class="label-body-2">
+                      <span class="text-md line-h-2">{{work.actors.join(" / ")}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-2 m-t">
+        <div class="section-heading">
+          <div class="section-title">艺人印象</div>
+          <div class="section-sub-title">STAR IMPRESSION</div>
+        </div>
+        <div class="section-body">
+          <div class="scale-small">
+
+
+          <div class="c-grid" v-if="star.weibo_impression">
+            <div class="c-g c-g-1">
+              <div class="c-g-i">{{star.weibo_impression[10]}}</div>
+              <div class="c-g-i">{{star.weibo_impression[7]}}</div>
+              <div class="c-g-i">{{star.weibo_impression[8]}}</div>
+              <div class="c-g-i">{{star.weibo_impression[13]}}</div>
+            </div>
+            <div class="c-g c-g-1">
+              <div class="c-g-i font21">{{star.weibo_impression[5]}}</div>
+              <div class="c-g-i font26">{{star.weibo_impression[0]}}</div>
+              <div class="c-g-i font23">{{star.weibo_impression[3]}}</div>
+            </div>
+            <div class="c-g c-g-1">
+              <div class="c-g-i font20">{{star.weibo_impression[6]}}</div>
+              <div class="c-g-i font25">{{star.weibo_impression[1]}}</div>
+              <div class="c-g-i font24">{{star.weibo_impression[2]}}</div>
+              <div class="c-g-i font22">{{star.weibo_impression[4]}}</div>
+            </div>
+            <div class="c-g c-g-1">
+              <div class="c-g-i">{{star.weibo_impression[11]}}</div>
+              <div class="c-g-i">{{star.weibo_impression[9]}}</div>
+              <div class="c-g-i">{{star.weibo_impression[12]}}</div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="section-2 m-t">
+        <div class="section-heading">
+          <div class="section-title" id="baidu">百度指数</div>
+          <div class="section-sub-title">BAIDU INDEX</div>
+        </div>
+        <div class="section-body">
+
+          <div class="text-2">趋势图</div>
+          <div class="">
+          <div class="baidu-container">
+            <!-- <div class="baidu-x-bg"></div> -->
+            <div class="baidu-title font-thin">
+              <span class="">搜索指数</span>
+              <span class="">{{star.name}}</span>
+              <div class="baidu-color-block">
+                <img src="./static/img/baidu-color-block.png">
+              </div>
+            </div>
+            <div class="baidu-lg">
+              <div class="baidu-x-bg"></div>
+              <div id="baiduzhishu" style="width: 1240px; height:500px;" ref="baiduzhishu"></div>
+            </div>
+            <div class="baidu-sm">
+              <div class="baidu-x-bg"></div>
+              <div id="baiduzhishu-small" style="width: 520px; height:280px;" ref="baiduzhishu"></div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-2 m-t">
+        <div class="section-heading">
+          <div class="section-title">粉丝画像</div>
+          <div class="section-sub-title">FANS PORTRAIT</div>
+        </div>
+        <div class="section-body">
+          <div class="row row-no-margin">
+            <div class="box-col-5">
+              <div class="text-2">年龄分布</div>
+              <div class="">
+              <div class="age-container">
+                <div class="age-label-bg "></div>
+                <div id="age" style="width: 500px; height:260px;"></div>
+              </div>
+              </div>
+            </div>
+            <div class="box-col-5">
+              <div class="sex-container">
+              <div class="text-2">性别分布</div>
+              <div class="sex-box">
+                <div class="arrow-top-left"></div>
+                <div class="arrow-bottom-right"></div>
+                <div class="sex-box-1">
+                  <div class="male font-thin">
+                      <div class="">
+                        <img src="./static/img/male.png">
+                      </div>
+                      <div class="">
+                        男性
+                      </div>
+                  </div>
+                  <div id="male" style="width: 150px; height:150px; margin: 28px auto;"></div>
+                </div>
+                <div class="sex-box-2">
+                  <div class="female font-thin">
+                      <div class="">
+                        <img src="./static/img/female.png">
+                      </div>
+                      <div class="">
+                        女性
+                      </div>
+                  </div>
+                  <div id="female" style="width: 150px; height:150px; margin: 28px auto;"></div>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+          <div class="row row-no-margin">
+            <div class="box-1 map-container">
+              <div class="text-2">地域分布</div>
+              <div class="province-rank">
+                <div class="">
+                  <div class="rank-title">省份排名前十</div>
+                </div>
+                <div class="rank-box">
+                  <div class="rank-box-item" v-for="item in rank">
+                    <div class="rank-name">{{item.name}}</div> <div class="rank-line" :style="'width:' + (160 * item.value / maxRank) + 'px'"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="clear map-container-map map-lg hidden-sm">
+                <div id="map" style="width: 950px; height:800px;"></div>
+              </div>
+              <div class="map-container-map map-small hidden-sm-n">
+                <div id="map-small" style="width: 650px; height:550px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+      <div class="" v-if = "loaded && !star.name">
+        <div class="not-found">
+            信息尚未收录
+        </div>
+      </div>
+
+      <div class="" v-if = "list && list.length > 9">
+        <div class="">
+          {{last}}
+        </div>
+        <div class="" v-for="item in list">
+          {{item[0]}}
+        </div>
+      </div>
+
+      <div class="app-footer">
+        <div>北京橘子文化传媒有限公司 COPYRIGHT ©2016ALL RIGHTS RESERVED</div>
+        <div>京ICP备14049433号 京公网安备 11010502035157号</div>
+      </div>
+
+      <a @click="scrollTop" class="go-up-btn" :class="{show: showUpButton}">
+        <div class="go-up">
+          <img src="./static/img/go-up.png">
+        </div>
+      </a>
+
+
+    </div>
+    <script src="./static/js/util.js"></script>
+    <script src="./static/js/config.js?version=1.0.0"></script>
+    <script src="./static/js/star.js?version=1.0.0"></script>
+  </body>
+</html>

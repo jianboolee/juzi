@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>星眼系统 - 橘子娱乐 - 年轻人第一新媒体</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="keywords" content="娱乐,资讯,明星,娱乐,时尚,生活">
+   <meta name="description" content="橘子娱乐是原创新闻资讯平台的新生代趣闻工厂, 内容涵盖社交网络热点, 娱乐八卦, 美妆、时尚，影视，生活等类别.用户可以第一时间了解最热的原创资讯，橘子娱乐将致力于成为娱乐资讯的原创内容生产者。">
+   <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+
+   <link href="./assets/bootstrap.min.css" rel="stylesheet">
+
+   <link rel="stylesheet" href="./static/css/style.css">
+   <link rel="stylesheet" href="./static/css/star.css">
+   <link rel="stylesheet" href="./static/css/style-index.css">
+   <style>
+    [v-cloak] { display: none; }
+   </style>
+   <script src="./assets/vue.min.js"></script>
+   <script src="./assets/axios.min.js"></script>
+  </head>
+  <body>
+
+    <div class="bg-anim">
+      <div id='stars'></div>
+      <div id='stars2'></div>
+      <div id='stars3'></div>
+    </div>
+    <div class="app" id="app" :class="{render: render}" @click="onClick">
+      <div class="app-header">
+          <a href="./" class="home-button">
+            <img src="./static/img/home-btn.png">
+          </a>
+          <div class="logo">
+            <a href="./">
+            <img src="./static/img/logo.png">
+            </a>
+          </div>
+
+      </div>
+      <div class="app-body">
+
+        <div class="s-1">
+          <h2 class="font-thin">橘子星眼</h2>
+          <div class="sub-h2 font-thin">AI大数据为您分析专属代言人</div>
+          <div class="search-form-lg" ref="dropdownC">
+            <form @submit.prevent="onSubmit" class="s-l-input">
+              <button type="submit" class="search-button"></button>
+              <input v-show="queryString" class="input" type="text" name="name" v-model="queryString" autocomplete="off" @keyup.backspace="clearQuery" @focus="onFocus" @blur="onBlur">
+              <input v-show="!queryString" class="input" type="text" name="name" placeholder="搜索艺人" v-model="key" autocomplete="off" @focus="onFocus" @blur="onBlur">
+              <div class="dropdown-c">
+                <div class="block search-more" v-show="showSearcheMore">
+                  <div class="block m-t-sm text-left clear">
+                    <div class="pull-left s-label">选择标签</div>
+                    <div class="block s-label-r">
+                      <a href="javascript:void(0);" @click="selectTag(t)" :class="{active: t.active}"  class="tag-btn" v-for="t in tags">{{t.tag}}</a>
+                    </div>
+                  </div>
+                  <div class="block m-t-md text-left clear">
+                    <div class="pull-left s-label">商业信息</div>
+                    <div class="block s-label-r">
+                      <select class="s-select" name="" v-model="type" @change="makeQuery">
+                        <option :value="item.value" v-for="item in businessOptions">{{item.name}}</option>
+                      </select>
+                      <span class="m-r-sm m-l-sm">价格：从</span>
+                      <input type="text" name="" class="s-input" v-model="min" @focus="onFocus" @blur="onBlur">
+                      <span>至</span>
+                      <input type="text" name="" class="s-input" v-model="max" @focus="onFocus" @blur="onBlur">
+                      <span>万</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class=""  v-show="searchList">
+          <div class="table-list">
+            <a :href="'./star.html?name=' + item.name" class="table-list-item" v-for="item in searchList">
+              <div class="b-b block ">
+                <div class="avatar-2">
+                  <img :src="item.pic_url">
+                </div>
+                <div class="t-i-info">
+                  <div class="t-i-1 text-left">
+                    <span class="m-r-sm font-blod">明星&nbsp;&nbsp;&nbsp;</span>
+                    <span>{{item.name}}</span>
+                  </div>
+                  <div class="t-i-1">
+                    <span class="m-r-sm font-blod">阅读量</span>
+                    <span>{{item.read_num}}</span>
+                  </div>
+                  <div class="t-i-1">
+                    <span class="m-r-sm font-blod">互动量</span>
+                    <span>{{item.inter_num}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="block clear row">
+                <div class="col-6 padder-v-20" >
+                  <div class="font-blod label-i-1">标签</div>
+                  <div class="label-i-r">
+                    <div class="tags-2 m-b" v-for="tag in item.tags">{{tag}}</div>
+                  </div>
+                </div>
+                <div class="col-6  padder-v-20 label-i-2">
+                  <div class="font-blod label-i-1">商业信息</div>
+                  <div class="label-i-r">
+                    <div class=" m-b" v-for="info in item.buss_info">{{info}}</div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+          <div class="no-data" v-if="searchList && searchList.length < 1">
+            <p>未找到相应结果</p>
+            <p>
+              <a href="./"> << 返回首页</a>
+            </p>
+          </div>
+          <pagination v-model="totalPage" @pagechange="onPageChange" v-show="totalPage"></pagination>
+
+        </div>
+
+        <div class="" v-show="!searchList">
+
+        <div class="home-s-title m-100">
+            <div class="tool-tip-group pull-right">
+              <div class="tool-tip-label">数据来源：来源于某艺人在一段时间内的的微博阅读数、微博互动量、微博超级话题数据，采用弹性网络回归模型预测明星热度值。</div>
+              <div class="font-thin text-20">
+                查看规则
+              </div>
+            </div>
+            <span class="title52">星指数TOP50</span>
+            <div class="sub-title2 font-thin">
+              <!-- <b>28</b>期 -->
+              <span class="m-n-l">截止时间: {{date}}</span>
+            </div>
+        </div>
+        <div class="home-s-2" :class="{expand: expand}" v-if="list && list.length > 0">
+          <div class="link-group-title">
+            <div class="link-group-item-1">排名</div>
+            <div class="link-group-item-2">艺人</div>
+            <div class="link-group-item-3">阅读数</div>
+            <div class="link-group-item-4">互动数</div>
+            <div class="link-group-item-5">热度指数</div>
+          </div>
+          <a :href="'./star.html?name=' + item[0]" v-for="(item, index) in list">
+          <div class="link-group-item-hover">
+            <div class=" link-group-item font-thin">
+              <div class="link-group-item-1 text-37">{{index + 1}}</div>
+              <div class="link-group-item-2">
+                <div class="avatar-1">
+                  <img :src="item[4]">
+                </div>
+                <div class="avatar-box">
+                  {{item[0]}}
+                </div>
+              </div>
+              <div class="link-group-item-3 text-28">{{item[2]}}</div>
+              <div class="link-group-item-4 text-28">{{item[3]}}</div>
+              <div class="link-group-item-5 text-33">
+                <div class="num-label-1">
+                    {{item[1]}}
+                </div>
+              </div>
+            </div>
+          </div>
+          </a>
+        </div>
+        <!-- <div class="">
+          <a @click="expand = !expand" class="expand-btn" :class="{expand: expand}">
+            <img src="./static/img/arrow-down.png">
+          </a>
+        </div> -->
+
+      </div>
+
+
+      </div>
+      <div class="app-footer">
+        <div>北京橘子文化传媒有限公司 COPYRIGHT ©2016ALL RIGHTS RESERVED</div>
+        <div>京ICP备14049433号 京公网安备 11010502035157号</div>
+      </div>
+    </div>
+    <script src="./static/js/util.js"></script>
+    <script src="./static/js/components/index.js"></script>
+    <script src="./static/js/index.js"></script>
+
+  </body>
+
+</html>
